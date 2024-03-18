@@ -98,11 +98,8 @@ class MapGoals(Node):
         cv2.imshow("ROS2 map", self.map_np)
         cv2.setMouseCallback("ROS2 map", self.click_event)
         key = cv2.waitKey(1)
-        if key==27:
-            print("exiting")
-            exit()
 
-    def generate_goal_message(self, x, y, theta):
+    def generate_goal_message(self, x, y, theta=0):
         goal_pose = PoseStamped()
         goal_pose.header.frame_id = 'map'
         goal_pose.header.stamp = self.get_clock().now().to_msg()

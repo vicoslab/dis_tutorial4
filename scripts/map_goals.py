@@ -53,18 +53,20 @@ class MapGoals(Node):
         self.occupancy_grid_sub = self.create_subscription(OccupancyGrid, map_topic, self.map_callback, qos_profile)
         self.nav_to_pose_client = ActionClient(self, NavigateToPose, 'navigate_to_pose')
 
-        # Create a timer, so we can control the OpenCV window and follow goal execution
+        # Create a timer, so we can control the OpenCV window, and do the main part of the work
         self.timer = self.create_timer(timer_period, self.timer_callback)
 
         self.get_logger().info(f"Node has been initialized! Will perform the tasks.")
 
     def click_event(self, event, x, y, flags, params): 
     
+        self.clicked_x = x
+        self.clicked_y = y
         # checking for left mouse clicks 
         if event == cv2.EVENT_LBUTTONDOWN: 
             self.get_logger().info(f"Clicked a new point: {x}, {y}.")
             if not self.currently_navigating:
-                self.get_logger().info(f"Will generate send a new goal!")
+                self.get_logger().info(f"Will generate and send a new goal! Eventually.")
                 self.clicked_x = x
                 self.clicked_y = y
                 self.pending_goal = True
@@ -76,6 +78,13 @@ class MapGoals(Node):
             self.get_logger().info(f"Waiting for a new map to be loaded!")
             return
         
+        if not self.map_np is None and not self.clicked_x is None:
+            world_x, world_y = self.map_pixel_to_world(self.clicked_x, self.clicked_y)
+            world_orientation = 0.            
+            x, y = self.world_to_map_pixel(world_x, world_y)
+            # Put a one pixel dot in the map image, to verify conversion
+            self.map_np[int(y-1)][int(x-1)] = 0
+        
         # If the robot is not currently navigating to a goal, and there is a goal pending
         if not self.currently_navigating and self.pending_goal:
             world_x, world_y = self.map_pixel_to_world(self.clicked_x, self.clicked_y)
@@ -84,8 +93,7 @@ class MapGoals(Node):
             self.go_to_pose(goal_pose)
 
             # Not needed, just checking the coordinate conversions
-            x, y = self.world_to_map_pixel(world_x, world_y)
-            self.map_np[y, x] = 127
+
 
         cv2.imshow("ROS2 map", self.map_np)
         cv2.setMouseCallback("ROS2 map", self.click_event)
@@ -108,15 +116,16 @@ class MapGoals(Node):
     def map_pixel_to_world(self, x, y, theta=0):
         ### Convert a pixel in an numpy image, to a real world location
         ### Not verified for theta!=0
-        assert self.map_data["resolution"] is not None
+        assert not self.map_data["resolution"] is None
 
         # Apply resolution, change of origin, and translation
+        # 
         world_x = x*self.map_data["resolution"] + self.map_data["origin"][0]
         world_y = (self.map_data["height"]-y)*self.map_data["resolution"] + self.map_data["origin"][1]
 
         # Apply rotation
         rot = self.get_rotation_matrix(theta)
-        world_coords = np.matmul(rot, np.array(world_x, world_y))
+        world_coords = np.matmul(rot, np.array([world_x, world_y]))
 
         world_x, world_y = world_coords
         return world_x, world_y
@@ -127,12 +136,13 @@ class MapGoals(Node):
         assert self.map_data["resolution"] is not None
 
         # Apply resolution, change of origin, and translation
+        # x 
         x = int((world_x - self.map_data["origin"][0])/self.map_data["resolution"])
         y = int(self.map_data["height"] - (world_y - self.map_data["origin"][1])/self.map_data["resolution"] )
         
         # Apply rotation
         rot = self.get_rotation_matrix(world_theta)
-        coords = np.matmul(rot, np.array(x, y))
+        coords = np.matmul(rot, np.array([x, y]))
         x, y = coords
         return x, y
 

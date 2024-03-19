@@ -54,5 +54,8 @@ Then, you can do stuff like:
 ### Using ROS bags
 Those of you that can only work on the simulation in the lab, make use of the `ros2 bag` command line tool. It is a tool for recording all or some messages published. For example, you can run the simulation and drive to robot around the polygon, while recording the messages published (like the images from the camera). Then you can copy the `bag` file to another computer, play it, and work on face detection and clustering. The tutorial for `ros2 bag` is [here](https://docs.ros.org/en/humble/Tutorials/Beginner-CLI-Tools/Recording-And-Playing-Back-Data/Recording-And-Playing-Back-Data.html) 
 
-### Some demo functionalities
+### map_goals.py
 In the demo package this week, you have a node that sends a navigation goal to the robot by clicking on the map. This demo package illustrates some ideas, like how you can read the map from the topic and convert it to a numpy image, how you can convert from pixel coordinates to real world coordinates and more. Download, build, test, explore code.
+
+### transform_point.py
+The other script in this package, demonstrates how you can use the TF2 libraries to do transformations between frames. This node first creates a point that is 0.5m in front of the robot (in its header the frame_id is "base_link"). Then it looks up the transformation between the "base_link" and the "map" frames, and then applies the transformation to the point so it is transformed in the "map" frame. Then it create a marker from the point and publishes it, so you can see it in Rviz on the `/breadcrumbs`topic.

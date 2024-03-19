@@ -29,6 +29,7 @@ install(DIRECTORY
 
 install(PROGRAMS
   scripts/map_goals.py
+  scripts/transform_point.py
   DESTINATION lib/${PROJECT_NAME})
 
 ament_package()

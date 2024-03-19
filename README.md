@@ -28,6 +28,10 @@ In the case when Ignition Gazebo fails to start and you see repeated prints of `
 ```
     export IGN_IP=127.0.0.1
 ```
+### Problems with Nvidia GPU
+If you have an Nvidia GPU, but you arew still having problems with the simulation, it is very likely that Gazebo does not use the dedicated driver for the GPU. The most problematic result is that the laser is not beign simulated, and as a result a map is not being built so you do not see the map in RViz. There are a lot of possible causes for this, this troubleshooting guide solved those problems for some students:
+
+https://github.com/gazebosim/docs/blob/master/fortress/troubleshooting.md
 
 ### Saying Hello
 As part of Task1, your robot needs to say something when it approaches a detected face. To do this, you can simply record an audio file, and use a module like `playsound` (that you install with `pip install playsound`). There are also other modules for playing sounds: `pydub`, `simpleaudio`, or using the `os` library and playing the sound with your system player.     

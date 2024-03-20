@@ -42,6 +42,7 @@ If you do not want to write your own transformations (e.q. Euler angles to Quate
 
 ```
     sudo apt install ros-humble-tf-transformations
+    sudo apt install ros-humble-turtle-tf2-py
     pip3 install transforms3d
 ```
 

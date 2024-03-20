@@ -9,6 +9,7 @@ from nav_msgs.msg import OccupancyGrid
 from nav2_msgs.action import NavigateToPose
 from geometry_msgs.msg import Quaternion, PoseStamped
 from turtle_tf2_py.turtle_tf2_broadcaster import quaternion_from_euler
+# from tf_transformations import quaternion_from_euler
 
 import tf_transformations
 
@@ -57,6 +58,8 @@ class MapGoals(Node):
         self.timer = self.create_timer(timer_period, self.timer_callback)
 
         self.get_logger().info(f"Node has been initialized! Will perform the tasks.")
+
+        cv2.namedWindow("ROS2 map", cv2.WINDOW_NORMAL)
 
     def click_event(self, event, x, y, flags, params): 
     
@@ -209,7 +212,12 @@ class MapGoals(Node):
         quat_tf = quaternion_from_euler(0, 0, angle_z)
 
         # Convert a list to geometry_msgs.msg.Quaternion
-        quat_msg = Quaternion(x=quat_tf[0], y=quat_tf[1], z=quat_tf[2], w=quat_tf[3])
+        quat_msg = Quaternion(x=quat_tf[0], y=quat_tf[1], z=quat_tf[2], w=quat_tf[3]) # for tf_turtle
+        # quat_msg = Quaternion(x=quat_tf[1], y=quat_tf[2], z=quat_tf[3], w=quat_tf[0]) # for tf transforms
+
+
+        # tf returns the quaternion with the ordering x, y, z, w and transforms3d returns w, x, y, z.
+
         return quat_msg
     
     def get_rotation_matrix(self, theta):

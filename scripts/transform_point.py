@@ -86,7 +86,7 @@ class TranformPoints(Node):
 
 
     def create_marker(self, point_stamped, marker_id):
-        """You can the description of the Marker message here: https://docs.ros2.org/galactic/api/visualization_msgs/msg/Marker.html"""
+        """You can see the description of the Marker message here: https://docs.ros2.org/galactic/api/visualization_msgs/msg/Marker.html"""
         marker = Marker()
 
         marker.header = point_stamped.header

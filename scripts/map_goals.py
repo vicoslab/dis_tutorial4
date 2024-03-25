@@ -95,9 +95,6 @@ class MapGoals(Node):
             goal_pose = self.generate_goal_message(world_x, world_y, world_orientation)
             self.go_to_pose(goal_pose)
 
-            # Not needed, just checking the coordinate conversions
-
-
         cv2.imshow("ROS2 map", self.map_np)
         cv2.setMouseCallback("ROS2 map", self.click_event)
         key = cv2.waitKey(1)
@@ -132,8 +129,7 @@ class MapGoals(Node):
         assert self.map_data["resolution"] is not None
 
         # Apply resolution, change of origin, and translation
-        # x is the first coordinate, which in opencv and numpy that is the matrix row - vertical
-        # vertical
+        # x is the first coordinate, which in opencv (numpy) that is the matrix row - vertical
         x = int((world_x - self.map_data["origin"][0])/self.map_data["resolution"])
         y = int(self.map_data["height"] - (world_y - self.map_data["origin"][1])/self.map_data["resolution"] )
         
@@ -213,10 +209,6 @@ class MapGoals(Node):
 
         # Convert a list to geometry_msgs.msg.Quaternion
         quat_msg = Quaternion(x=quat_tf[0], y=quat_tf[1], z=quat_tf[2], w=quat_tf[3]) # for tf_turtle
-        # quat_msg = Quaternion(x=quat_tf[1], y=quat_tf[2], z=quat_tf[3], w=quat_tf[0]) # for tf transforms
-
-
-        # tf returns the quaternion with the ordering x, y, z, w and transforms3d returns w, x, y, z.
 
         return quat_msg
     

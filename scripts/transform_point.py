@@ -24,7 +24,7 @@ qos_profile = QoSProfile(
 class TranformPoints(Node):
     """Demonstrating some convertions and loading the map as an image"""
     def __init__(self):
-        super().__init__('map_goals')
+        super().__init__('transform_point')
 
         # Basic ROS stuff
         timer_frequency = 1

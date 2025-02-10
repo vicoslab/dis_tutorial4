@@ -51,7 +51,7 @@ class TranformPoints(Node):
         point_in_robot_frame.header.frame_id = "/base_link"
         point_in_robot_frame.header.stamp = self.get_clock().now().to_msg()
 
-        point_in_robot_frame.point.x = 0.5
+        point_in_robot_frame.point.x = -0.5
         point_in_robot_frame.point.y = 0.
         point_in_robot_frame.point.z = 0. 
 
@@ -85,18 +85,18 @@ class TranformPoints(Node):
 
 
 
-    def create_marker(self, point_stamped, marker_id):
+    def create_marker(self, point_stamped, marker_id, lifetime=30.0):
         """You can see the description of the Marker message here: https://docs.ros2.org/galactic/api/visualization_msgs/msg/Marker.html"""
         marker = Marker()
 
         marker.header = point_stamped.header
 
-        marker.type = marker.CUBE
+        marker.type = marker.SPHERE
         marker.action = marker.ADD
         marker.id = marker_id
 
         # Set the scale of the marker
-        scale = 0.15
+        scale = 0.1
         marker.scale.x = scale
         marker.scale.y = scale
         marker.scale.z = scale
@@ -111,6 +111,8 @@ class TranformPoints(Node):
         marker.pose.position.x = point_stamped.point.x
         marker.pose.position.y = point_stamped.point.y
         marker.pose.position.z = point_stamped.point.z
+
+        marker.lifetime = Duration(seconds=lifetime).to_msg()
 
         return marker
 

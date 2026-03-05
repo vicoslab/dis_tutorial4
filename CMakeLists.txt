@@ -22,11 +22,6 @@ find_package(nav2_msgs REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(visualization_msgs REQUIRED)
 
-install(DIRECTORY
-  launch
-  DESTINATION share/${PROJECT_NAME}/
-)
-
 install(PROGRAMS
   scripts/map_goals.py
   scripts/transform_point.py

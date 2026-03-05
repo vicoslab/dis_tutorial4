@@ -103,7 +103,7 @@ It can also operate using a **discovery server** which acts as a central databas
 
 ### Zenoh Env variables
 
-[Zenoh](https://docs.ros.org/en/jazzy/Installation/RMW-Implementations/Non-DDS-Implementations/Working-with-Zenoh.html) is a new and most promising RMW, designed for minimal overhead and tends to be the fastest. Unlike other RMWs, it requires running a router which relays traffic and handles discovery. After installing it, it can be enabled using:
+[Zenoh](https://docs.ros.org/en/jazzy/Installation/RMW-Implementations/Non-DDS-Implementations/Working-with-Zenoh.html) is a new and most promising RMW, designed for minimal overhead and tends to be the fastest. Unlike other RMWs, it currently requires explicitly running a router which relays traffic and handles discovery. After installing it, it can be enabled using:
 
 ```bash
 export RMW_IMPLEMENTATION=rmw_zenoh_cpp
@@ -111,12 +111,12 @@ export RMW_IMPLEMENTATION=rmw_zenoh_cpp
 
 Zenoh runs only on localhost by default. You can connect nodes directly to an existing zenohd router on another PC at e.g. 192.168.1.10:
 ```bash
-ZENOH_CONFIG_OVERRIDE='mode="client";connect/endpoints=["tcp/192.168.1.10:7447"]'
+export ZENOH_CONFIG_OVERRIDE='mode="client";connect/endpoints=["tcp/192.168.1.10:7447"]'
 ```
 
 Or connect your local router to another PC's zenohd router:
 ```bash
-ZENOH_CONFIG_OVERRIDE='connect/endpoints=["tcp/192.168.1.10:7447"]'
+export ZENOH_CONFIG_OVERRIDE='connect/endpoints=["tcp/192.168.1.10:7447"]'
 ros2 run rmw_zenoh_cpp rmw_zenohd
 ```
 

@@ -71,7 +71,7 @@ ROS 2 is built on top of a data distribution abstraction which provides topic di
 ![RMW Table](figs/chart.png)
 *ROS 2 Message Stack*
 
-When a node is initialized it will use the rmw API to try and connect to other nodes using the specified RMW (you can check what's currently being used with `echo $RMW_IMPLEMENTATION`) and declare its publishers and subscribers. This can involve a central server that runs as the `ros2 daemon` service, or be done on a peer-to-peer basis.
+When a node is initialized it will use the rmw API to try and connect to other nodes using the specified RMW (you can check what's currently being used with `echo $RMW_IMPLEMENTATION`) and declare its publishers and subscribers. This can involve a central server that runs as the `ros2 daemon` service, or be done on a peer-to-peer basis. 
 
 A consequence of using DDS-based RMWs are Quality of Service (QoS) policies which can set topics to be reliable as TCP, as best-effort as UDP, or persistent. More on [QoS settings](https://docs.ros.org/en/jazzy/Concepts/Intermediate/About-Quality-of-Service-Settings.html#id6). It is important that a publisher and subscriber use a compatible QoS, otherwise communication cannot take place.
 
@@ -112,12 +112,6 @@ export RMW_IMPLEMENTATION=rmw_zenoh_cpp
 Zenoh runs only on localhost by default. You can connect nodes directly to an existing zenohd router on another PC at e.g. 192.168.1.10:
 ```bash
 export ZENOH_CONFIG_OVERRIDE='mode="client";connect/endpoints=["tcp/192.168.1.10:7447"]'
-```
-
-Or connect your local router to another PC's zenohd router:
-```bash
-export ZENOH_CONFIG_OVERRIDE='connect/endpoints=["tcp/192.168.1.10:7447"]'
-ros2 run rmw_zenoh_cpp rmw_zenohd
 ```
 
 ### Cyclone Env variables

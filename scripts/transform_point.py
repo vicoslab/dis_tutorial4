@@ -53,7 +53,7 @@ class TranformPoints(Node):
 
         point_in_robot_frame.point.x = -0.5
         point_in_robot_frame.point.y = 0.
-        point_in_robot_frame.point.z = 0. 
+        point_in_robot_frame.point.z = 0.
 
         # Now we look up the transform between the base_link and the map frames
         # and then we apply it to our PointStamped

@@ -9,7 +9,6 @@ from nav_msgs.msg import OccupancyGrid
 from nav2_msgs.action import NavigateToPose
 from geometry_msgs.msg import Quaternion, PoseStamped
 from turtle_tf2_py.turtle_tf2_broadcaster import quaternion_from_euler
-# from tf_transformations import quaternion_from_euler
 
 import tf_transformations
 
@@ -81,13 +80,6 @@ class MapGoals(Node):
             self.get_logger().info(f"Waiting for a new map to be loaded!")
             return
         
-        # if not self.map_np is None and not self.clicked_x is None:
-        #     world_x, world_y = self.map_pixel_to_world(self.clicked_x, self.clicked_y)
-        #     world_orientation = 0.            
-        #     x, y = self.world_to_map_pixel(world_x, world_y)
-        #     # Put a one pixel dot in the map image, to verify conversion
-        #     self.map_np[int(y-1)][int(x-1)] = 0
-        
         # If the robot is not currently navigating to a goal, and there is a goal pending
         if not self.currently_navigating and self.pending_goal:
             world_x, world_y = self.map_pixel_to_world(self.clicked_x, self.clicked_y)
@@ -110,9 +102,8 @@ class MapGoals(Node):
 
         return goal_pose
 
-    def map_pixel_to_world(self, x, y, theta=0):
-        ### Convert a pixel in an numpy image, to a real world location
-        ### Works only for theta=0
+    def map_pixel_to_world(self, x, y):
+        ### Convert a pixel in an numpy image to a real world location
         assert not self.map_data["resolution"] is None
 
         # Apply resolution, change of origin, and translation
@@ -211,16 +202,9 @@ class MapGoals(Node):
         quat_msg = Quaternion(x=quat_tf[0], y=quat_tf[1], z=quat_tf[2], w=quat_tf[3]) # for tf_turtle
 
         return quat_msg
-    
-    def get_rotation_matrix(self, theta):
-        c = np.cos(theta)
-        s = np.sin(theta)
-        rot = np.array([[c, -s],
-                        [s , c]])
-        return rot
 
 def main():
-    #print('Navigate to a goal by clicking a pixel.')
+    print('Navigate to a goal by clicking a pixel.')
 
     rclpy.init(args=None)
     node = MapGoals()

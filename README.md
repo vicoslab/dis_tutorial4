@@ -45,7 +45,7 @@ In the demo package this week, you have a node that sends a navigation goal to t
 
 ### transform_point.py
 
-The other script in this package demonstrates how you can use the TF2 libraries to do transformations between frames. This node first creates a point that is 0.5m behind of the robot (in its header the frame_id is "base_link"). Then it looks up the transformation between the "base_link" and the "map" frames, and then applies the transformation to the point so it is transformed in the "map" frame. Then it creates a marker from the point and publishes it, so you can see it in Rviz on the `/breadcrumbs`topic.
+The other script in this package demonstrates how you can use the TF2 libraries to do transformations between frames. This node first creates a point that is 0.5m behind of the robot (in its header the frame_id is "base_link"). Then it looks up the transformation between the "base_link" and the "map" frames, and then applies the transformation to the point so it is transformed in the "map" frame. Finally, it creates a marker from the point and publishes it, so you can see it in Rviz on the `/breadcrumbs`topic.
 
 See [the documentation page](https://docs.ros.org/en/jazzy/Tutorials/Intermediate/RViz/Marker-Display-types/Marker-Display-types.html) for the available marker types and more info.
 
@@ -66,14 +66,14 @@ For our purposes, the quality of the generated voice does not matter, so do as y
 
 # ROS Middleware (RMW) Guide
 
-ROS 2 is built on top of a data distribution abstraction which provides topic discovery, message serialization and network transport. This layer is usually handled by a [Data Distibution Service](https://www.omg.org/omg-dds-portal/) (DDS) such as CycloneDDS and FastDDS, however a RMW can be anything that conforms to the specification (e.g. [rmw_email](https://github.com/christophebedard/rmw_email)) and can act as a drop-in replacement. Not all RMWs are made equal however, and when something doesn't work correctly in ROS 2, the problem is usually the DDS.
+ROS 2 is built on top of a data distribution abstraction which provides topic discovery, message serialization and network transport. This layer is usually handled by a [Data Distribution Service](https://www.omg.org/omg-dds-portal/) (DDS) such as CycloneDDS and FastDDS, however a RMW can be anything that conforms to the specification (e.g. [rmw_email](https://github.com/christophebedard/rmw_email)) and can act as a drop-in replacement. Not all RMWs are made equal however, and when something doesn't work correctly in ROS 2, the problem is usually the DDS.
 
 ![RMW Table](figs/chart.png)
 *ROS 2 Message Stack*
 
 When a node is initialized it will use the rmw API to try and connect to other nodes using the specified RMW (you can check what's currently being used with `echo $RMW_IMPLEMENTATION`) and declare its publishers and subscribers. This can involve a central server that runs as the `ros2 daemon` service, or be done on a peer-to-peer basis. 
 
-A consequence of using DDS-based RMWs are Quality of Service (QoS) policies which can set topics to be reliable as TCP, as best-effort as UDP, or persistent. More on [QoS settings](https://docs.ros.org/en/jazzy/Concepts/Intermediate/About-Quality-of-Service-Settings.html#id6). It is important that a publisher and subscriber use a compatible QoS, otherwise communication cannot take place.
+A consequence of using DDS-based RMWs are Quality of Service (QoS) policies which can set topics to be reliable (like TCP), as best-effort (like UDP), or persistent. More on [QoS settings](https://docs.ros.org/en/jazzy/Concepts/Intermediate/About-Quality-of-Service-Settings.html#id6). It is important that a publisher and subscriber use a compatible QoS, otherwise communication cannot take place.
 
 [More advanced info](https://docs.ros.org/en/jazzy/Concepts/Advanced/About-Internal-Interfaces.html).
 
@@ -166,7 +166,7 @@ It can also be set to a loopback interface which restricts it to only localhost:
   </Domain>
 </CycloneDDS>
 ```
-In this case multicasts might need to be additionaly enabled on lo, depending on your OS. 
+In this case multicast might need to be additionaly enabled on lo, depending on your OS. 
 
 For Ubuntu: `sudo ip link set lo multicast on`
 

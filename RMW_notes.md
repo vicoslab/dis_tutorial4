@@ -100,6 +100,6 @@ It can also be set to a loopback interface which restricts it to only localhost:
   </Domain>
 </CycloneDDS>
 ```
-In this case multicast might need to be additionaly enabled on lo, depending on your OS. 
+In this case multicast would need to be additionaly enabled on lo, depending on your OS. 
 
-For Ubuntu: `sudo ip link set lo multicast on`
+For Ubuntu [see the autoware guide](https://autowarefoundation.github.io/autoware-documentation/main/installation/additional-settings-for-developers/network-configuration/enable-multicast-for-lo/).
